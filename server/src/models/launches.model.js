@@ -5,7 +5,7 @@ const planets = require('./planets.mongo');
 
 const DEFAULT_FLIGHT_NUMBER = 100;
 
-saveLaunch(launch);
+
 
 const SPACEX_API_URL = 'https://api.spacexdata.com/v4/launches/latest';
 
@@ -119,6 +119,7 @@ await launches.findOneAndUpdate({
     upsert: true,
 });
 };
+
 
 async function scheduleNewLaunch(launch) {
 // Checking if the selected planet exists
