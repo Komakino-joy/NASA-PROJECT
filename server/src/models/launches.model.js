@@ -35,12 +35,7 @@ try {
     
     console.log(response.data.docs)
 
-    if (response.status != 200) {
-        console.log('Problem downloading launch data');
-        throw new Error('Launch data download failed.');
-    }
-
-    const launchDocs = await response.data.docs;
+    const launchDocs =  response.data.docs;
     
     for ( const launchDoc of launchDocs){
         const payloads = launchDoc['payloads'];
@@ -61,9 +56,17 @@ try {
         console.log(`${launch.flightNumber} ${launch.mission}`);
         // populate launches collection
         await saveLaunch(launch);
+
+        
+    if (response.status != 200) {
+        console.log('Problem downloading launch data');
+        throw new Error('Launch data download failed.');
+    }
+
+
     }
 } catch (error) {
-  console.log('this is an error', error)  
+  console.log('Error requesting launches from SpaceX')  
 }
 
 };
