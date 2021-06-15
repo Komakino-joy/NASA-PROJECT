@@ -65,11 +65,12 @@ async function populateLaunches() {
 
 
     }
+}
 } catch (error) {
   console.log('Error requesting launches from SpaceX')  
 }
 
-};
+
 
 
 async function loadLaunchData() {
