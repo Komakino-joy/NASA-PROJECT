@@ -33,6 +33,7 @@ try {
         }
     })
     
+    console.log(response.data.docs)
 
     if (response.status != 200) {
         console.log('Problem downloading launch data');
