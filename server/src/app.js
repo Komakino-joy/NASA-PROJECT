@@ -13,7 +13,6 @@ app.use(morgan('combined')) // Defaults to combined, but being explicit.
 
 app.use(express.json());
 
-
 app.use('/v1', api);
 
 if (process.env.NODE_ENV === 'production') {
