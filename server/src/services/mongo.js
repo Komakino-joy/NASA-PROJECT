@@ -1,4 +1,9 @@
 const mongoose = require('mongoose');
+const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config({path: path.join(__dirname, '..', '..' ,'..', 'var.env')});
+
 
 // Being explicit that the open event will only be triggered once. 
 mongoose.connection.once('open', () => {
@@ -10,6 +15,7 @@ mongoose.connection.on('error', (err) => {
 });
 
 async function mongoConnect() {
+    console.log('hellloooooooooooo',process.env.MONGO_URL, process.env.PORT)
     mongoose.connect(process.env.MONGO_URL, {
         // Pass these 4 parameters everytime to avoid deprecation warnings
         useNewUrlParser: true, // Determines how mongoose parses connection string

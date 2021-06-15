@@ -27,5 +27,7 @@
     "url": "https://github.com/Komakino-joy/NASA-PROJECT/issues"
   },
   "homepage": "https://github.com/Komakino-joy/NASA-PROJECT#readme",
-  "dependencies": {}
+  "dependencies": {
+    "dotenv": "^10.0.0"
+  }
 }
