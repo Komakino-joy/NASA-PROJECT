@@ -33,7 +33,6 @@ try {
         }
     })
     
-    console.log('hellllllooooooooooooo', response.data)
 
     if (response.status != 200) {
         console.log('Problem downloading launch data');
