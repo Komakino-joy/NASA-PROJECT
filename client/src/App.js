@@ -7,7 +7,7 @@ import {
   ThemeProvider,
   createSounds,
   createTheme,
-} from "arwes.dev";
+} from "arwes";
 
 import AppLayout from "./pages/AppLayout";
 
