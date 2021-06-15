@@ -45,7 +45,7 @@ try {
 
 
 
-const launchDocs = response.data.docs;
+const launchDocs = await response.data.docs;
 
 for ( const launchDoc of launchDocs){
     const payloads = launchDoc['payloads'];
