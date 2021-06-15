@@ -33,7 +33,7 @@ try {
         }
     })
     
-    console.log(response.data.docs)
+    console.log(response)
 
     const launchDocs =  response.data.docs;
     
