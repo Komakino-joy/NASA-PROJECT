@@ -32,7 +32,6 @@ async function populateLaunches() {
         }
     })
     
-    console.log(response)
     
     if (response.status != 200) {
         console.log('Problem downloading launch data');
@@ -78,7 +77,7 @@ const firstLaunch = await findLaunch({
 if (firstLaunch) {
     console.log('Launch data already loaded!');
 } else {
-    // await populateLaunches();
+    await populateLaunches();
 };
 };
 
