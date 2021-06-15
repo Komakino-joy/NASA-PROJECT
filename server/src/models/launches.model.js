@@ -45,30 +45,30 @@ try {
 
 }
 
-// const launchDocs = await response.data.docs;
+const launchDocs = await response.data.docs;
 
-// for ( const launchDoc of launchDocs){
-//     const payloads = launchDoc['payloads'];
-//     //convert customers into a single array of all customers
-//     const customers = payloads.flatMap((payload) => {
-//         return payload['customers'];
-//     });
+for ( const launchDoc of launchDocs){
+    const payloads = launchDoc['payloads'];
+    //convert customers into a single array of all customers
+    const customers = payloads.flatMap((payload) => {
+        return payload['customers'];
+    });
 
-//     const launch = {
-//         flightNumber: launchDoc['flight_number'],
-//         mission: launchDoc['name'],
-//         rocket: launchDoc['rocket']['name'],
-//         launchDate: launchDoc['date_local'],
-//         upcoming: launchDoc['upcoming'],
-//         success: launchDoc['success'],
-//         customers,
-//     };
-//     console.log(`${launch.flightNumber} ${launch.mission}`);
-//     // populate launches collection
-//     await saveLaunch(launch);
-// }
+    const launch = {
+        flightNumber: launchDoc['flight_number'],
+        mission: launchDoc['name'],
+        rocket: launchDoc['rocket']['name'],
+        launchDate: launchDoc['date_local'],
+        upcoming: launchDoc['upcoming'],
+        success: launchDoc['success'],
+        customers,
+    };
+    console.log(`${launch.flightNumber} ${launch.mission}`);
+    // populate launches collection
+    await saveLaunch(launch);
+}
 
-// };
+};
 
 
 async function loadLaunchData() {
