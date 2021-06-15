@@ -40,7 +40,7 @@ try {
         throw new Error('Launch data download failed.');
     }
 } catch (error) {
-  console.log(error)  
+  console.log('this is an error', error)  
 }
 
 }
@@ -71,107 +71,106 @@ try {
 // };
 
 
-// async function loadLaunchData() {
-// // save us from making this fairly expensive query an unecessary amount of times. 
-// const firstLaunch = await findLaunch({
-//     flightNumber: 1,
-//     rocket: 'Falcon 1',
-//     mission: 'FalconSat',
-// });
+async function loadLaunchData() {
+// save us from making this fairly expensive query an unecessary amount of times. 
+const firstLaunch = await findLaunch({
+    flightNumber: 1,
+    rocket: 'Falcon 1',
+    mission: 'FalconSat',
+});
 
-// if (firstLaunch) {
-//     console.log('Launch data already loaded!');
-// } else {
-//     await populateLaunches();
-// };
-// };
+if (firstLaunch) {
+    console.log('Launch data already loaded!');
+} else {
+    await populateLaunches();
+};
+};
 
-// async function findLaunch(filter) {
-// return await launches.findOne(filter);
-// };
+async function findLaunch(filter) {
+return await launches.findOne(filter);
+};
 
-// async function existsLaunchWithId(launchId) {
-//     return await findLaunch({
-//         flightNumber: launchId,
-//     });
-// };
-
-
-// async function getLatestFlightNumber() {
-//     const latestLaunch = await launches
-//     .findOne({})
-//     // sorting in descending order
-//     .sort('-flightNumber');
-
-// if (!latestLaunch) {
-//     return DEFAULT_FLIGHT_NUMBER;
-// }
-
-//     return latestLaunch.flightNumber;
-// };
+async function existsLaunchWithId(launchId) {
+    return await findLaunch({
+        flightNumber: launchId,
+    });
+};
 
 
-// async function getAllLaunches(skip, limit) {
-//     return await launches
-//     .find({}, { '_id': 0, '__v': 0, })
-//     .sort({ flightNumber: 1 })
-//     .skip(skip)
-//     .limit(limit);
-// };
+async function getLatestFlightNumber() {
+    const latestLaunch = await launches
+    .findOne({})
+    // sorting in descending order
+    .sort('-flightNumber');
+
+if (!latestLaunch) {
+    return DEFAULT_FLIGHT_NUMBER;
+}
+
+    return latestLaunch.flightNumber;
+};
+
+
+async function getAllLaunches(skip, limit) {
+    return await launches
+    .find({}, { '_id': 0, '__v': 0, })
+    .sort({ flightNumber: 1 })
+    .skip(skip)
+    .limit(limit);
+};
+
+
+async function saveLaunch(launch) {
+// findOneAndUpdate will only return the props that we set in our request.
+await launches.findOneAndUpdate({
+    // Checking to see if flightNumber already exists.
+    flightNumber: launch.flightNumber,
+}, launch, {
+    upsert: true,
+});
+};
 
 
 
-// async function saveLaunch(launch) {
-// // findOneAndUpdate will only return the props that we set in our request.
-// await launches.findOneAndUpdate({
-//     // Checking to see if flightNumber already exists.
-//     flightNumber: launch.flightNumber,
-// }, launch, {
-//     upsert: true,
-// });
-// };
+async function scheduleNewLaunch(launch) {
+// Checking if the selected planet exists
+const planet = await planets.findOne({
+    keplerName: launch.target,
+});
+
+if (!planet) {
+    throw new Error('No Matching planet was found');
+}
 
 
+const newFlightNumber = await getLatestFlightNumber() + 1;
 
-// async function scheduleNewLaunch(launch) {
-// // Checking if the selected planet exists
-// const planet = await planets.findOne({
-//     keplerName: launch.target,
-// });
+const newLaunch = Object.assign(launch, {
+    success: true,
+    upcoming: true,
+    customers: ['Zero to Mastery', 'NASA'],
+    flightNumber: newFlightNumber,
+});
 
-// if (!planet) {
-//     throw new Error('No Matching planet was found');
-// }
+await saveLaunch(newLaunch);
+};
 
+async function abortLaunchById(launchId) {
+const aborted = await launches.updateOne({
+        flightNumber: launchId,
+    }, {
+        upcoming: false,
+        success: false,
+    });
 
-// const newFlightNumber = await getLatestFlightNumber() + 1;
+    // return if only one document was updated
+    return aborted.ok === 1 && aborted.nModified === 1;
+};
 
-// const newLaunch = Object.assign(launch, {
-//     success: true,
-//     upcoming: true,
-//     customers: ['Zero to Mastery', 'NASA'],
-//     flightNumber: newFlightNumber,
-// });
-
-// await saveLaunch(newLaunch);
-// };
-
-// async function abortLaunchById(launchId) {
-// const aborted = await launches.updateOne({
-//         flightNumber: launchId,
-//     }, {
-//         upcoming: false,
-//         success: false,
-//     });
-
-//     // return if only one document was updated
-//     return aborted.ok === 1 && aborted.nModified === 1;
-// };
-
-// module.exports = {
-// loadLaunchData,
-// existsLaunchWithId, 
-// getAllLaunches, 
-// scheduleNewLaunch,
-// abortLaunchById
-// };
+module.exports = {
+loadLaunchData,
+existsLaunchWithId, 
+getAllLaunches, 
+scheduleNewLaunch,
+abortLaunchById
+}
