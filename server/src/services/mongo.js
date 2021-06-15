@@ -15,7 +15,6 @@ mongoose.connection.on('error', (err) => {
 });
 
 async function mongoConnect() {
-    console.log('hellloooooooooooo',process.env.MONGO_URL, process.env.PORT)
     mongoose.connect(process.env.MONGO_URL, {
         // Pass these 4 parameters everytime to avoid deprecation warnings
         useNewUrlParser: true, // Determines how mongoose parses connection string
