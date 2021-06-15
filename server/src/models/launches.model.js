@@ -7,7 +7,7 @@ const DEFAULT_FLIGHT_NUMBER = 100;
 
 
 
-const SPACEX_API_URL = 'https://api.spacexdata.com/v4/launches/latest';
+const SPACEX_API_URL = 'https://api.spacexdata.com/v4/launches/query';
 
 async function populateLaunches() {
     console.log('Downloading launch data...');
@@ -33,6 +33,11 @@ async function populateLaunches() {
     })
     
     console.log(response)
+    
+    if (response.status != 200) {
+        console.log('Problem downloading launch data');
+        throw new Error('Launch data download failed.');
+    }
 
     const launchDocs =  response.data.docs;
     
@@ -42,7 +47,7 @@ async function populateLaunches() {
         const customers = payloads.flatMap((payload) => {
             return payload['customers'];
         });
-    
+        
         const launch = {
             flightNumber: launchDoc['flight_number'],
             mission: launchDoc['name'],
@@ -57,10 +62,6 @@ async function populateLaunches() {
         await saveLaunch(launch);
 
         
-    if (response.status != 200) {
-        console.log('Problem downloading launch data');
-        throw new Error('Launch data download failed.');
-    }
     }
 }
 
@@ -77,7 +78,7 @@ const firstLaunch = await findLaunch({
 if (firstLaunch) {
     console.log('Launch data already loaded!');
 } else {
-    await populateLaunches();
+    // await populateLaunches();
 };
 };
 
