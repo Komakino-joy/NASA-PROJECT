@@ -33,12 +33,14 @@ try {
         }
     })
     
+    console.log('hellllllooooooooooooo', response)
+
     if (response.status != 200) {
         console.log('Problem downloading launch data');
         throw new Error('Launch data download failed.');
     };
 } catch (error) {
-  console.log(error)  
+  console.log('ERROR HAS OCCURED')  
 }
 
 
