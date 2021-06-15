@@ -32,7 +32,7 @@ const response = await axios.post(SPACEX_API_URL, {
             }
         ]
     }
-});
+}).catch(err => (console.log(err)));
 
 if (response.status != 200) {
     console.log('Problem downloading launch data');
